@@ -4,11 +4,6 @@
 
 # Laporan Akhir Project Data Analytics: Analisis Prediksi Rating Sereal
 
-**Disusun Oleh:** Kelompok Project DAE
-**Topik:** Klasifikasi Kualitas Sereal Berdasarkan Kandungan Nutrisi
-
----
-
 ## 1. Pendahuluan
 Industri makanan, khususnya sereal sarapan, memiliki variasi produk yang sangat luas dengan klaim kesehatan yang beragam. Dalam proyek ini, kelompok kami bertujuan untuk menganalisis dataset `Cereals.csv` guna membongkar pola tersembunyi di balik penilaian (rating) konsumen.
 
