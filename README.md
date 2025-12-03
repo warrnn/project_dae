@@ -2,51 +2,96 @@
 * C14220004 - Bryan Mogens Warren
 * C14220011 - Christoper Bintang Augurius
 
-# Laporan Project Data Analytics: Analisis Faktor Penentu Rating Sereal
+# Laporan Akhir Project Data Analytics: Analisis Prediksi Rating Sereal
 
-## 1. Latar Belakang
-Dalam proyek ini, kelompok kami melakukan analisis terhadap dataset `Cereals.csv` untuk memahami variabel nutrisi apa saja yang paling berpengaruh terhadap penilaian (rating) produk sereal. Proses analisis ini kami kerjakan secara *end-to-end*, mulai dari pembersihan data hingga pembuatan model prediksi menggunakan algoritma Decision Tree.
-
-## 2. Proses dan Hasil Analisis
-
-### A. Preprocessing Data
-Sebelum masuk ke tahap pemodelan, kami melakukan beberapa tahapan persiapan data agar hasil analisisnya valid:
-* **Handling Missing Values:** Saat mengecek data, kami menemukan beberapa data kosong (null) pada kolom `carbo`, `sugars`, dan `potass`. Agar data tidak bias, kami sepakat mengisi kekosongan tersebut menggunakan nilai tengah (median).
-* **Penentuan Target:** Fokus analisis kami adalah kolom `rating`. Kami membagi data menjadi dua kelas klasifikasi berdasarkan nilai median-nya (40.4). Jadi, sereal dengan rating di atas 40.4 kami kategorikan sebagai **High Rating**, dan sisanya masuk ke **Low Rating**.
-
-### B. Eksplorasi Hubungan Variabel (Korelasi)
-Dari matriks korelasi yang kami buat, ditemukan pola hubungan yang sangat menarik:
-* **Pengaruh Gula (Sugars):** Terdapat korelasi negatif yang cukup ekstrem (-0.76) antara gula dan rating. Artinya, semakin banyak gula, rating sereal justru makin anjlok.
-* **Pengaruh Serat (Fiber):** Sebaliknya, serat memiliki korelasi positif (0.58). Sereal yang kaya serat cenderung mendapatkan rating yang lebih tinggi.
-
-### C. Evaluasi Model Machine Learning
-Kami menggunakan model Decision Tree untuk memprediksi apakah sebuah sereal akan mendapatkan rating tinggi atau rendah berdasarkan kandungan nutrisinya.
-* **Akurasi:** Model yang kami bangun berhasil memprediksi data uji dengan akurasi sekitar 83%.
-* **Fitur Terpenting:** Berdasarkan *feature importance*, variabel **Sugars** menjadi penentu utama (76%), jauh mengungguli variabel lain seperti Vitamins (8%) dan Potass (5%).
+**Disusun Oleh:** Kelompok Project DAE
+**Topik:** Klasifikasi Kualitas Sereal Berdasarkan Kandungan Nutrisi
 
 ---
 
-## 3. Insight Utama
+## 1. Pendahuluan
+Industri makanan, khususnya sereal sarapan, memiliki variasi produk yang sangat luas dengan klaim kesehatan yang beragam. Dalam proyek ini, kelompok kami bertujuan untuk menganalisis dataset `Cereals.csv` guna membongkar pola tersembunyi di balik penilaian (rating) konsumen.
 
-Dari hasil pengolahan data dan diskusi kelompok, ada beberapa poin penting yang bisa disimpulkan:
+Tujuan utama dari proyek ini adalah membangun model Machine Learning yang dapat memprediksi apakah sebuah produk sereal akan mendapatkan rating "High" atau "Low" hanya dengan melihat label nutrisinya, serta memahami faktor apa yang paling krusial dalam penentuan rating tersebut.
 
-1.  **Rating = Indikator Kesehatan**
-    Ternyata, rating sereal dalam dataset ini mencerminkan seberapa "sehat" produk tersebut. Konsumen atau sistem penilaian tampaknya memberikan hukuman skor rendah untuk produk yang hanya menang di rasa manis (tinggi gula) tetapi minim nutrisi.
+## 2. Metodologi Penelitian
+Kami menggunakan pendekatan Cross-Industry Standard Process for Data Mining (CRISP-DM) yang diimplementasikan menggunakan KNIME Analytics Platform. Berikut adalah alur kerja (workflow) yang kami bangun:
 
-2.  **Ambang Batas Gula (The 7.5g Rule)**
-    Saat kami bedah struktur *Decision Tree*-nya, terlihat adanya pola "aturan main" yang jelas:
-    * Jika kandungan gula per sajian **di bawah atau sama dengan 7.5 gram**, peluang produk tersebut masuk kategori **High Rating** sangat besar.
-    * Jika gula **di atas 7.5 gram**, produk tersebut hampir pasti jatuh ke kategori **Low Rating**, kecuali jika dibantu dengan kandungan serat yang sangat tinggi (> 4.5 gram).
+### A. Data Understanding & Preprocessing
+Data mentah terdiri dari 77 jenis sereal dengan 16 atribut (kalori, protein, lemak, sodium, serat, gula, dll).
+* **Penanganan Missing Values:** Kami menemukan kekosongan data pada kolom `carbo`, `sugars`, dan `potass`. Kami memutuskan untuk melakukan imputasi menggunakan nilai Median agar tidak merusak distribusi data jika ada outlier.
+* **Feature Engineering:** Kami mengubah kolom target `rating` (numerik) menjadi kategorial (biner).
+    * *Threshold:* Nilai median rating (40.4).
+    * *Kelas:* "High Rating" (> 40.4) dan "Low Rating" (≤ 40.4).
+* **Normalisasi:** Menggunakan node `Normalizer` (Min-Max Scaling) untuk menyamakan skala data numerik agar fitur dengan angka besar (seperti sodium) tidak mendominasi fitur angka kecil (seperti fiber).
 
-3.  **Perbandingan Produsen**
-    Dari segi *brand*, Nabisco (N) menjadi juara dengan rata-rata rating tertinggi (67.9) karena produk mereka konsisten rendah gula. Sementara itu, General Mills (G) memiliki rata-rata terendah (34.4) karena profil produknya yang cenderung tinggi gula dan kalori.
+### B. Pemisahan Data (Partitioning)
+Agar evaluasi model objektif, kami membagi data menggunakan node `Partitioning` dengan rasio:
+* **70% Training Set:** Data untuk melatih model mempelajari pola.
+* **30% Testing Set:** Data untuk menguji seberapa akurat prediksi model.
+
+### C. Pemodelan
+Kami memilih algoritma Decision Tree karena keunggulannya dalam interpretabilitas. Hasil model ini berupa pohon keputusan yang mudah dibaca manusia menjadi aturan bisnis (business rules).
 
 ---
 
-## 4. Kesimpulan dan Saran
+## 3. Hasil Analisis dan Pembahasan
 
-Berdasarkan analisis yang telah kami lakukan, kesimpulan utamanya adalah menurunkan kadar gula merupakan cara paling efektif untuk menaikkan rating. Jika kelompok kami harus memberikan rekomendasi strategi produk, saran kami adalah:
+### A. Analisis Korelasi (Linear Correlation)
+Sebelum masuk ke prediksi, kami menganalisis hubungan antar variabel. Temuan kuncinya adalah:
+1.  **Musuh Utama Rating adalah Gula:** Korelasi antara `sugars` dan `rating` adalah -0.76. Ini adalah hubungan negatif yang sangat kuat.
+2.  **Sahabat Rating adalah Serat:** Korelasi antara `fiber` dan `rating` adalah +0.58.
+3.  **Kalori Berdampak Negatif:** Kalori juga memiliki korelasi negatif cukup kuat (-0.69), yang masuk akal karena gula menyumbang kalori.
 
-1.  **Reformulasi Resep:** Pastikan kadar gula per sajian ditekan hingga di bawah 7.5 gram agar produk bisa masuk ke segmen "High Rating".
-2.  **Strategi Pemasaran:** Highlight kandungan serat pada kemasan, karena data membuktikan serat berbanding lurus dengan persepsi kualitas produk.
-3.  **Hindari Kombinasi Fatal:** Jangan membuat produk yang rendah serat sekaligus tinggi gula, karena model memprediksi kombinasi ini memiliki peluang gagal yang sangat besar untuk mendapatkan rating yang baik.
+### B. Evaluasi Performa Model
+Berdasarkan pengujian pada data test (30% data), berikut adalah performa model Decision Tree kami:
+
+* **Akurasi Global:** ~83%
+    Model mampu menebak dengan benar 83 dari 100 kasus.
+
+* **Analisis Confusion Matrix:**
+    * Model sangat baik dalam mengenali sereal "Low Rating" (sedikit kesalahan).
+    * Terdapat sedikit False Negatif (Sereal bagus yang diprediksi jelek), namun jumlahnya minim.
+
+* **Feature Importance (Tingkat Kepentingan Variabel):**
+    Model menganggap variabel berikut paling penting dalam memisahkan rating:
+    1.  **Sugars (76.7%)** - Dominan
+    2.  **Vitamins (8.7%)**
+    3.  **Potass (5.4%)**
+
+---
+
+## 4. Interpretasi Bisnis & Insight Mendalam
+
+Dari hasil "pohon keputusan" yang dihasilkan model, kami menerjemahkannya menjadi wawasan bisnis yang praktis:
+
+### Insight 1: Aturan Emas "7.5 Gram"
+Kami menemukan ambang batas psikologis yang jelas pada data:
+> "Sereal dengan kandungan gula > 7.5 gram per sajian memiliki probabilitas sangat tinggi untuk jatuh ke kategori Low Rating."
+
+Ini memberikan indikasi bahwa konsumen (atau badan pemberi rating) sangat sensitif terhadap kandungan gula. Produk di atas ambang batas ini dianggap sebagai "permen berkedok sarapan".
+
+### Insight 2: Peran Serat sebagai Penyelamat
+Jika sebuah produk terpaksa memiliki gula agak tinggi (di atas rata-rata), satu-satunya cara untuk tetap mendapatkan rating baik adalah dengan mendongkrak kandungan Serat (Fiber) secara drastis (di atas 4.5 gram). Tanpa serat, produk manis tidak memiliki harapan untuk mendapatkan skor tinggi.
+
+### Insight 3: Peta Persaingan Produsen
+* **Nabisco (N)** adalah market leader dalam kualitas. Strategi mereka fokus pada produk gandum utuh (shredded wheat) yang minim gula.
+* **General Mills (G)** dan **Kellogg's (K)** memiliki portofolio yang campur aduk, namun rata-ratanya terseret turun oleh banyaknya produk sereal anak-anak yang tinggi gula.
+
+---
+
+## 5. Kesimpulan dan Rekomendasi
+
+### Kesimpulan
+Berdasarkan analisis kelompok kami, dapat disimpulkan bahwa Rating Sereal bukanlah soal rasa, melainkan soal profil kesehatan. Variabel `sugars` adalah prediktor tunggal terkuat. Model Decision Tree yang kami bangun sudah cukup andal untuk digunakan sebagai alat bantu prediksi awal bagi tim R&D sebelum meluncurkan produk.
+
+### Keterbatasan (Limitations)
+Kami menyadari analisis ini memiliki keterbatasan:
+1.  **Ukuran Dataset:** Jumlah data hanya 77 baris, yang tergolong kecil untuk Machine Learning.
+2.  **Faktor Eksternal:** Kami hanya menganalisis faktor nutrisi, padahal rating juga bisa dipengaruhi oleh harga, branding, atau tekstur yang tidak ada dalam data ini.
+
+### Rekomendasi Strategis
+Untuk meningkatkan daya saing produk sereal, kami menyarankan:
+1.  **Product Development:** Tetapkan KPI ketat bahwa gula tidak boleh melebihi 7 gram per sajian.
+2.  **Marketing:** Gunakan klaim "High Fiber" atau "No Added Sugar" secara agresif di kemasan depan, karena ini berkorelasi langsung dengan persepsi kualitas.
+3.  **Kompetisi:** Hindari berkompetisi di segmen "sereal manis rendah serat" karena segmen ini sudah jenuh dan memiliki persepsi rating yang buruk.
