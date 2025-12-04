@@ -58,7 +58,7 @@ Sebelum masuk ke prediksi, kami menganalisis hubungan antar variabel. Temuan kun
 
 Berdasarkan pengujian pada data test (20% data), berikut adalah performa model Decision Tree kami:
 
-![A beautiful sunset over the mountains](images/sunset.jpg "Mountain Sunset")
+![Scorer](images/foto_7.png "scorer")
 
 * **Akurasi Global:** ~93.75%
 
