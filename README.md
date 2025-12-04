@@ -81,7 +81,7 @@ Berdasarkan pengujian pada data test (20% data), berikut adalah performa model D
 
 Dari hasil "pohon keputusan" yang dihasilkan model, kami menerjemahkannya menjadi wawasan bisnis yang praktis:
 
-### Insight 1: Aturan Emas "7.5 Gram"
+### Insight 1: Golden Rule "7.5 Gram"
 
 ![scatter plot](images/foto_4.png "scatter plot")
 
@@ -97,7 +97,7 @@ Ini memberikan indikasi bahwa konsumen (atau badan pemberi rating) sangat sensit
 
 Jika sebuah produk terpaksa memiliki gula agak tinggi (di atas rata-rata), satu-satunya cara untuk tetap mendapatkan rating baik adalah dengan mendongkrak kandungan Serat (Fiber) secara drastis (di atas 4.5 gram). Tanpa serat, produk manis tidak memiliki harapan untuk mendapatkan skor tinggi.
 
-### Insight 3: Peta Persaingan Produsen
+### Insight 3: Mapping Persaingan Produsen
 
 ![brand](images/foto_6.png "brand")
 
