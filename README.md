@@ -23,6 +23,7 @@ Data mentah terdiri dari 77 jenis sereal dengan 16 atribut (kalori, protein, lem
 * **Penanganan Missing Values:** Kami menemukan kekosongan data pada kolom `carbo`, `sugars`, dan `potass`. Kami memutuskan untuk melakukan imputasi menggunakan nilai Median agar tidak merusak distribusi data jika ada outlier.
 * **Feature Engineering:** Kami mengubah kolom target `rating` (numerik) menjadi kategorial (biner).
 
+  contoh 5 data teratas
   ![Rule Engine](images/foto_1.png "Foto 1")
 
   * *Threshold:* Nilai median rating (40).
